@@ -24,7 +24,7 @@ public class Thief {
     }
 
     public void addRole(Role role) throws IndexOutOfBoundsException {
-        if (roles.size() < 2) {
+        if (roles.size() < 20) {
             roles.add(role);
         } else {
             throw new IndexOutOfBoundsException("Max 2 roles");

@@ -1,6 +1,8 @@
 package org.webler.zsolt;
 
+import org.webler.zsolt.game.thief.GameController;
 import org.webler.zsolt.game.thief.Thief;
+import org.webler.zsolt.game.thief.skill.Mastermind;
 import org.webler.zsolt.game.thief.skill.SkillType;
 
 import java.util.*;
@@ -9,10 +11,9 @@ import java.util.stream.Collectors;
 public class Main {
     public static void main(String[] args) {
 
+        GameController controller = new GameController(new Mastermind());
+        controller.startGame();
 
-        List<Thief> thieves = thiefGenerator();
-
-        System.out.println("asd");
     }
 
 
