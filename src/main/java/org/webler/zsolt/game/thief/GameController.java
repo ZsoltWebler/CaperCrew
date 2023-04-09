@@ -179,6 +179,10 @@ public class GameController {
 
     public void doHeist(List<Thief> selectedThieves, Heist nextHeist) {
 
+        if(selectedThieves != null){
+
+        }
+
         List<Trial> trials = nextHeist.getTrials();
         Map<SkillType, List<Thief>> thievesBySkillType = new HashMap<>();
 
