@@ -1,30 +1,85 @@
 package org.webler.zsolt.game.thief;
 
+import org.webler.zsolt.game.thief.command.BadCommand;
+import org.webler.zsolt.game.thief.command.Command;
+import org.webler.zsolt.game.thief.phases.GamePhase;
+import org.webler.zsolt.game.thief.phases.HeistPhase;
+import org.webler.zsolt.game.thief.phases.MenuPhase;
 import org.webler.zsolt.game.thief.skill.Mastermind;
-import org.webler.zsolt.game.thief.skill.SkillType;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Scanner;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GameController {
 
     private final Mastermind mastermind;
-    private int heistNumber = 0;
-    private List<Thief> characterPool = new ArrayList();
-    private Heist nextHeist;
+    private GamePhase currentPhase;
+    private final ThiefFactorySingleton thiefFactory = ThiefFactorySingleton.getInstance();
+    private final HeistFactorySingleton heistFactory = HeistFactorySingleton.getInstance();
+
 
     public GameController(Mastermind mastermind) {
         this.mastermind = mastermind;
-        this.characterPool = thiefGenerator();
-        this.nextHeist = new Heist();
-        System.out.println();
+        initResources(mastermind);
+    }
 
+    private void initResources(Mastermind mastermind) {
+        mastermind.setAvailableThieves(thiefFactory.getRandomThieves(10));
+        mastermind.setCurrentHeist(heistFactory.getHeist());
     }
 
     public void startGame() {
+        printWelcomeMessage();
+        switchToMenuPhase();
+        playPhase();
+    }
 
+    private void playPhase() {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            Map<String, Command> commandMap = currentPhase.getAvailableCommands().stream().collect(Collectors.toMap(Command::getCommandString, Function.identity()));
+            String input = sc.nextLine();
+            String command = input.split(" ")[0];
+
+            commandMap.getOrDefault(command, new BadCommand()).execute(mastermind, parseArguments(input));
+        }
+    }
+
+    private Optional<String> parseArguments(String input) {
+
+        if (input.contains(" ")) {
+            String arg = input.split(" ", 2)[1];
+            if (!arg.trim().isEmpty()) {
+                return Optional.of(arg);
+            }
+        }
+        return Optional.ofNullable(null);
+
+
+    }
+
+
+    private void printWelcomeMessage() {
         System.out.println("Az lesz a feladatod, hogy összegyűjts " + mastermind.getMoneyToCollect()
                 + "$-t " + mastermind.getNumberOfHeist() + " rablás alatt, különben meghalsz!");
+    }
+
+    public void switchToGamePhase() {
+        currentPhase = new HeistPhase(this, mastermind);
+    }
+
+    public void switchToMenuPhase() {
+        currentPhase = new MenuPhase(this, mastermind);
+    }
+
+    /*
+
+    public void startGame() {
+
+
 
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -64,33 +119,11 @@ public class GameController {
 
     }
 
-    private void menu() {
-        List<String> commands = Arrays.asList("/info", "/characters", "/heist", "/new_heist");
-        commands.forEach(System.out::println);
-    }
-
-    private void newCharacterPool() {
-        this.characterPool = thiefGenerator();
-        System.out.println("Új karakterek érkeztek, de elveszítetted az összegyűjtött pénzed 5%-t!");
-        this.mastermind.setCurrentMoney((int) (this.mastermind.getCurrentMoney() * 0.95));
-
-    }
-
-    private void newHeist() {
-        this.nextHeist = new Heist();
-        this.heistNumber += 1;
-        System.out.println("Elhasználtál egy lehetőséget, már csak " +
-                (mastermind.getNumberOfHeist() - this.heistNumber) + " maradt!");
-        heist();
-
-    }
 
 
-    private Optional<Thief> selectThief(String thiefName) {
-        Optional<Thief> thief = characterPool.stream().filter(_thief -> _thief.getName().equals(thiefName)).findFirst();
-        return thief;
 
-    }
+
+
 
     private void addThiefIfExist(List<Thief> thieves, Optional<Thief> thief) {
         if (thief.isPresent()) {
@@ -274,5 +307,5 @@ public class GameController {
 
     }
 
-
+*/
 }

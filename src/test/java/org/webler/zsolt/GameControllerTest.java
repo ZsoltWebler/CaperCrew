@@ -18,7 +18,7 @@ public class GameControllerTest {
 
     @BeforeEach
     void setUp() {
-        controller = new GameController(new Mastermind());
+        controller = new GameController(new Mastermind(20,20));
     }
 
     @Test
