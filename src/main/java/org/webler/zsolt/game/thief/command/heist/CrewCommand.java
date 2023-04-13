@@ -1,5 +1,6 @@
 package org.webler.zsolt.game.thief.command.heist;
 
+import org.webler.zsolt.game.thief.Thief;
 import org.webler.zsolt.game.thief.command.Command;
 import org.webler.zsolt.game.thief.command.information.CharacterInformation;
 import org.webler.zsolt.game.thief.skill.Mastermind;
@@ -14,6 +15,10 @@ public class CrewCommand implements Command {
     @Override
     public void execute(Mastermind mastermind, Optional<String> arg) {
         new CharacterInformation(mastermind.getSelectedCrew()).printSceneInformation();
+        int dividend = mastermind.getSelectedCrew().stream().mapToInt(Thief::getDividend).sum();
+        int reward = mastermind.getCurrentHeist().getReward();
+        int realReward = (int) (reward * (dividend / 100.0f));
+        System.out.println("A várható jutalom ezzel a csapattal: " + realReward);
     }
 
     @Override

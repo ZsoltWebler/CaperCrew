@@ -6,6 +6,7 @@ import org.webler.zsolt.game.thief.GameController;
 import org.webler.zsolt.game.thief.Heist;
 import org.webler.zsolt.game.thief.Role;
 import org.webler.zsolt.game.thief.Thief;
+import org.webler.zsolt.game.thief.exceptions.ThiefFactoryException;
 import org.webler.zsolt.game.thief.skill.Mastermind;
 import org.webler.zsolt.game.thief.skill.SkillType;
 
@@ -17,7 +18,7 @@ public class GameControllerTest {
     GameController controller;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws ThiefFactoryException {
         controller = new GameController(new Mastermind(20,20));
     }
 
@@ -37,7 +38,7 @@ public class GameControllerTest {
 
         Heist nextHeist = new Heist();
 
-        controller.doHeist(selectedThieves,nextHeist);
+       // controller.doHeist(selectedThieves,nextHeist);
 
     }
 

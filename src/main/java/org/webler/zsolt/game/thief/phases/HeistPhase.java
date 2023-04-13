@@ -1,9 +1,7 @@
 package org.webler.zsolt.game.thief.phases;
 
 import org.webler.zsolt.game.thief.GameController;
-import org.webler.zsolt.game.thief.command.Command;
-import org.webler.zsolt.game.thief.command.InfoCommand;
-import org.webler.zsolt.game.thief.command.MenuCommand;
+import org.webler.zsolt.game.thief.command.*;
 import org.webler.zsolt.game.thief.command.heist.*;
 import org.webler.zsolt.game.thief.skill.Mastermind;
 
@@ -26,15 +24,18 @@ public class HeistPhase extends GamePhase {
     private List<Command> initAvailableCommands() {
 
         InfoCommand info = new InfoCommand();
+        CharactersCommand characters = new CharactersCommand();
+        HeistCommand heist = new HeistCommand();
         AddCrewCommand add = new AddCrewCommand();
         AddRoleCommand addRole = new AddRoleCommand();
         RemoveRoleCommand removeRole = new RemoveRoleCommand();
         RemoveCrewCommand remove = new RemoveCrewCommand();
         CrewCommand crew = new CrewCommand();
-        MenuCommand menu = new MenuCommand(Arrays.asList(info, add, addRole, remove, removeRole, crew));
+        StartHeistCommand start = new StartHeistCommand();
+        MenuCommand menu = new MenuCommand(Arrays.asList(info, characters, heist, add, addRole, remove, removeRole, crew, start));
 
 
-        return Arrays.asList(info, add, addRole, remove, removeRole, crew, menu);
+        return Arrays.asList(info, characters, heist, add, addRole, remove, removeRole, crew, menu, start);
 
     }
 

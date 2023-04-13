@@ -1,7 +1,6 @@
 package org.webler.zsolt.game.thief.command.menu;
 
 import org.webler.zsolt.game.thief.GameController;
-import org.webler.zsolt.game.thief.HeistFactorySingleton;
 import org.webler.zsolt.game.thief.command.Command;
 import org.webler.zsolt.game.thief.skill.Mastermind;
 
@@ -13,13 +12,14 @@ public class StartHeistCommand implements Command {
 
     private final GameController controller;
 
-    public StartHeistCommand(GameController controller){
+    public StartHeistCommand(GameController controller) {
         this.controller = controller;
     }
 
     @Override
     public void execute(Mastermind mastermind, Optional<String> arg) {
         controller.switchToGamePhase();
+        mastermind.setCurrentHeistCount(mastermind.getCurrentHeistCount() + 1);
         System.out.println("Rakd össze a csapatod!");
     }
 

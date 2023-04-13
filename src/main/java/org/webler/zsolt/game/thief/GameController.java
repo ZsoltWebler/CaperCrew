@@ -2,6 +2,7 @@ package org.webler.zsolt.game.thief;
 
 import org.webler.zsolt.game.thief.command.BadCommand;
 import org.webler.zsolt.game.thief.command.Command;
+import org.webler.zsolt.game.thief.exceptions.ThiefFactoryException;
 import org.webler.zsolt.game.thief.phases.GamePhase;
 import org.webler.zsolt.game.thief.phases.HeistPhase;
 import org.webler.zsolt.game.thief.phases.MenuPhase;
@@ -21,13 +22,17 @@ public class GameController {
     private final HeistFactorySingleton heistFactory = HeistFactorySingleton.getInstance();
 
 
-    public GameController(Mastermind mastermind) {
+    public GameController(Mastermind mastermind) throws ThiefFactoryException {
         this.mastermind = mastermind;
         initResources(mastermind);
     }
 
-    private void initResources(Mastermind mastermind) {
+    private void initResources(Mastermind mastermind) throws ThiefFactoryException {
         mastermind.setAvailableThieves(thiefFactory.getRandomThieves(10));
+        mastermind.setSelectedCrew(thiefFactory.getRandomThieves(3));
+        mastermind.getSelectedCrew().get(0).addRole(Role.DRIVER);
+        mastermind.getSelectedCrew().get(1).addRole(Role.DRIVER);
+        mastermind.getSelectedCrew().get(2).addRole(Role.GUNMAN);
         mastermind.setCurrentHeist(heistFactory.getHeist());
     }
 

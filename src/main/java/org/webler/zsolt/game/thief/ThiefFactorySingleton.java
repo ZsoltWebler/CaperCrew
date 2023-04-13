@@ -1,5 +1,6 @@
 package org.webler.zsolt.game.thief;
 
+import org.webler.zsolt.game.thief.exceptions.ThiefFactoryException;
 import org.webler.zsolt.game.thief.skill.SkillType;
 
 import java.util.*;
@@ -20,7 +21,12 @@ public class ThiefFactorySingleton {
         return INSTANCE;
     }
 
-    public List<Thief> getRandomThieves(int amount) {
+    public List<Thief> getRandomThieves(int amount) throws ThiefFactoryException {
+
+
+        if(amount > 26){
+            throw new ThiefFactoryException("The amount must be less then 27!");
+        }
 
         List<Thief> thieves = new ArrayList<>();
         List<Character> possibleNames = new ArrayList<>();
@@ -31,8 +37,6 @@ public class ThiefFactorySingleton {
         }
 
         Random rnd = new Random();
-
-
         while (thieves.size() < amount) {
             Character name = possibleNames.get(rnd.nextInt(possibleNames.size()));
             if (!usedNames.contains(name)) {

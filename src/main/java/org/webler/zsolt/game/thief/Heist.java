@@ -12,7 +12,7 @@ import java.util.Random;
 public class Heist {
 
     private final List<Trial> trials;
-    private final int reward;
+    private int reward;
 
     public Heist() {
         this.trials = generateTrials();
